@@ -22,11 +22,11 @@ public class Alarm : MonoBehaviour
         if(_isSensorActivated)
         {
             _speaker.gameObject.SetActive(true);
-            _speaker.Activation();
+            _speaker.Activate();
         }
         else
         {
-            _speaker.Deactivation();
+            _speaker.Deactivate();
         }
     }
 }

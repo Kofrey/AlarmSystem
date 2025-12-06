@@ -10,15 +10,20 @@ public class Speaker : MonoBehaviour
 
     private Coroutine _coroutine;
 
-    public void Activation()
+    public void Activate()
     {
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
         _coroutine = StartCoroutine(ChangeVolume(_maxVolume));
     }
 
-    public void Deactivation()
+    public void Deactivate()
     {
-        StopCoroutine(_coroutine);
-        StartCoroutine(ChangeVolume(0f));
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+            
+        _coroutine = StartCoroutine(ChangeVolume(0f));
     }
 
     private IEnumerator ChangeVolume(float targetVolume)
