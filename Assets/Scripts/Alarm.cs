@@ -4,32 +4,29 @@ using System.Collections.Generic;
 
 public class Alarm : MonoBehaviour
 {
-    [SerializeField] private AudioSource _alarmSound;
-    [SerializeField] private float _volumeFactor = 0.25f;
+    [SerializeField] private Sensor _sensor;
+    [SerializeField] private Speaker _speaker;
 
-    private float _maxVolume = 1f;
-
-    private void OnTriggerEnter(Collider other)
+    private void OnEnable()
     {
-        _volumeFactor = 0.25f;
-        StartCoroutine(ChangeVolume());
+        _sensor.Activated += OnSensorActivated;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnDisable() 
     {
-        _volumeFactor = -0.25f;
+        _sensor.Activated -= OnSensorActivated;
     }
 
-    private IEnumerator ChangeVolume()
+    private void OnSensorActivated(bool _isSensorActivated)
     {
-        while (enabled)
+        if(_isSensorActivated)
         {
-            _alarmSound.volume = Mathf.MoveTowards(_alarmSound.volume, _maxVolume, _volumeFactor * Time.deltaTime);
-
-            if(_alarmSound.volume == 0f)
-                break;
-
-            yield return null;
+            _speaker.gameObject.SetActive(true);
+            _speaker.Activation();
+        }
+        else
+        {
+            _speaker.Deactivation();
         }
     }
 }
